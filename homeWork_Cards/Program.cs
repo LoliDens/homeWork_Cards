@@ -20,12 +20,10 @@ namespace homeWork_Cards
     {
         public string Value { get; private set; }
 
-        private string[] _benefits = new string[] { "6", "7", "8", "9", "10", "В", "Д", "К", "Т" };
-        private string[] _suit = new string[] {"Чреви","Буби","Руби","Крести" };
-
-        public Card(int indexSuit, int indexBenefit)
+        
+        public Card(string benefit, string suit)
         {        
-            Value = _benefits[indexBenefit] + " " + _suit[indexSuit];
+            Value = $"{suit} {benefit}";
         }
     }
 
@@ -33,16 +31,16 @@ namespace homeWork_Cards
     {
         private List<Card> _cards = new List<Card>();
 
-        private int _amountBenefits = 9;
-        private int _amountSuit = 4;
+        private string[] _benefits = new string[] { "6", "7", "8", "9", "10", "В", "Д", "К", "Т" };
+        private string[] _suits = new string[] { "Чреви", "Буби", "Руби", "Крести" };
 
         public Deck()
         {
-            for (int i = 0; i < _amountSuit; i++)
+            for (int i = 0; i < _suits.Length; i++)
             {
-                for (int j = 0; j < _amountBenefits; j++)
+                for (int j = 0; j < _benefits.Length; j++)
                 {
-                    Card card = new Card(i,j);
+                    Card card = new Card(_suits[i], _benefits[j]);
                     _cards.Add(card);
                 }
             }
@@ -52,26 +50,25 @@ namespace homeWork_Cards
 
         public Card GetCard() 
         {
-            Card gerValue = null;
+            Card card = null;
 
             if (_cards.Count != 0) 
             {
-                gerValue = _cards[0];
+                card = _cards[0];
                 _cards.RemoveAt(0);
             }
 
-            return gerValue;
+            return card;
         }
 
         private void Shuffle(List<Card> cards) 
         {
             Random random = new Random();
-            Card temporaryCard = null;
 
             for (int i = 0; i < cards.Count; i++) 
             {
                 int randomIndex = random.Next(cards.Count);
-                temporaryCard = cards[randomIndex];
+                Card temporaryCard = cards[randomIndex];
                 cards[randomIndex] = cards[i];
                 cards[i] = temporaryCard;
             }
@@ -81,7 +78,7 @@ namespace homeWork_Cards
     class Player 
     {
         private List<Card> _cards = new List<Card>();
-        private Deck deck = new Deck();
+        private Deck _deck = new Deck();
 
         public void Play() 
         {
@@ -124,15 +121,15 @@ namespace homeWork_Cards
 
         private void DrowCard() 
         {
-            Card valueCard =  deck.GetCard();
+            Card card = _deck.GetCard();
 
-            if (valueCard == null)
+            if (card == null)
             {
                 Console.WriteLine("Карт больше нет");
             }
             else 
             {
-                _cards.Add(valueCard);
+                _cards.Add(card);
                 Console.WriteLine("Вы получили карту");
             }
         }

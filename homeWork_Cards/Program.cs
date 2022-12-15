@@ -31,46 +31,46 @@ namespace homeWork_Cards
     {
         private List<Card> _cards = new List<Card>();
 
-        private string[] _benefits = new string[] { "6", "7", "8", "9", "10", "В", "Д", "К", "Т" };
-        private string[] _suits = new string[] { "Чреви", "Буби", "Руби", "Крести" };
-
         public Deck()
         {
-            for (int i = 0; i < _suits.Length; i++)
+            string[] benefits = new string[] { "6", "7", "8", "9", "10", "В", "Д", "К", "Т" };
+            string[] suits = new string[] { "Чреви", "Буби", "Руби", "Крести" };
+
+            for (int i = 0; i < suits.Length; i++)
             {
-                for (int j = 0; j < _benefits.Length; j++)
+                for (int j = 0; j < benefits.Length; j++)
                 {
-                    Card card = new Card(_suits[i], _benefits[j]);
+                    Card card = new Card(suits[i], benefits[j]);
                     _cards.Add(card);
                 }
             }
 
-            Shuffle(_cards);
+            Shuffle();
         }
 
-        public Card GetCard() 
+        public Card GiveCard() 
         {
             Card card = null;
 
             if (_cards.Count != 0) 
             {
                 card = _cards[0];
-                _cards.RemoveAt(0);
+                _cards.Remove(card);
             }
 
             return card;
         }
 
-        private void Shuffle(List<Card> cards) 
+        private void Shuffle() 
         {
             Random random = new Random();
 
-            for (int i = 0; i < cards.Count; i++) 
+            for (int i = 0; i < _cards.Count; i++) 
             {
-                int randomIndex = random.Next(cards.Count);
-                Card temporaryCard = cards[randomIndex];
-                cards[randomIndex] = cards[i];
-                cards[i] = temporaryCard;
+                int randomIndex = random.Next(_cards.Count);
+                Card temporaryCard = _cards[randomIndex];
+                _cards[randomIndex] = _cards[i];
+                _cards[i] = temporaryCard;
             }
         }
     }
@@ -98,7 +98,7 @@ namespace homeWork_Cards
                 switch (userInput) 
                 {
                     case CommandGetCard:
-                        DrowCard();                       
+                        DrawCard();                       
                         break;
 
                     case CommandShowCard:
@@ -119,9 +119,9 @@ namespace homeWork_Cards
             }
         }
 
-        private void DrowCard() 
+        private void DrawCard() 
         {
-            Card card = _deck.GetCard();
+            Card card = _deck.GiveCard();
 
             if (card == null)
             {
